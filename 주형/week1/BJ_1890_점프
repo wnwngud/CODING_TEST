@@ -1,1 +1,56 @@
+import java.util.Scanner;
 
+public class Main {
+    static Scanner scanner = new Scanner(System.in);
+    static int N = scanner.nextInt();
+
+    public static void jump(long[][] visited, int[][] a) {
+        visited[0][0] = 1;
+
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                int current = a[i][j];
+                if(current==0) continue; //0이라면 점프 못뜀.
+
+                int next_i = i+current;
+                int next_j = j+current;
+
+                if(visited[i][j] != 0){ // 0이라면 지나갈 일이 없는 길이기 때문.
+                    if(next_i < N) visited[next_i][j] += visited[i][j]; //오른쪽으로 점프
+                    if(next_j < N) visited[i][next_j] += visited[i][j]; //왼쪽으로 점프
+                }
+            }
+        }
+    }
+    /*
+    이렇게 큰 문제를 작은 문제로 나누어 해결하는 방법을 동적 프로그래밍 -> Dynamic Programming 일명 dp라고 한다.
+    dp는 작은 문제들의 최적의 정답이 큰 문제에서도 최적의 정답이어야 하며,
+    중복되는 계산이 사용될 수 있는 문제에서 풀 수 있는 방법이다.
+
+    이 문제는 가장 왼쪽 위에서 가장 오른쪽 아래로 가는 경로의 수를 구하는 문제인데,
+    여기서 큰 문제는 가장 왼쪽 위에서 가장 오른쪽 아래로 가는 경로 수이고,
+    작은 문제는 현재 좌표에서 갈 수 있는 다음 좌표의 경로의 수이다.
+
+    visited[i][j]!=0 의 의미는 과거에 지나갈 수 있었던 visited[next_i][j] or visited[i][visited_j] 이 좌표들만
+    체크하겠다는 뜻이다. 즉, 지나갈 일이 없는 경로는 체크하지 않는다(미래에 지나갈 일이 있는 경로만 확인한다).
+    따라서 visited[0][0] = 1 부터 시작하여, 미래에 지나갈 일이 있는 좌표들에게 현재 좌표까지의 경로의 수를 기억하도록 한다.
+    후에 i=N-1, j=N_1이 되면 current==0 조건문에 걸려 지나가겠지만, 이미 visited[N-1][N-1]에는 가능한 모든 경로의 수가 구해져있다.
+     */
+
+
+    public static void main(String[] args) {
+        long[][] visited = new long [N][N];
+        int[][] a = new int[N][N];
+
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                a[i][j] = scanner.nextInt();
+            }
+        }
+
+        jump(visited, a);
+
+        System.out.println(visited[N-1][N-1]);
+    }
+
+}
