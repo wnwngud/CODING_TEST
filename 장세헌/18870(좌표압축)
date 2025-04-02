@@ -1,0 +1,72 @@
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+ /*
+ 백준 18870 - 좌표압축문제
+ 이 문제는 배열 A에 값을 입력받고 B라는 배열에 A의 값을 복제시켜 정렬후 HashMap을 통해 (A[i]값,rank)의 형태로 HashMap에 저장하여
+ 각각의 rank를 출력하면 되는 문제이다. HashMap에 B[i]가 정렬된 순서로 기입을 하는데 containsKey함수를 통해 해당 값이 이미 들어갔는지
+ 체크를 할 수 있음. 해당 값이 없는 containsKey == false일 때 Map에 rank를 매긴다. 중복값이 없을 때 rank++가 동작하기 때문에 중복값 때문에
+ index로만 할 때 rank가 높아지는 현상을 방지할 수 있음
+
+ StringBuilder
+ 일반적인 String과 달리 String의 크기를 조절할 수 있는 가변적인 변수이다. StringBuilder는 buffer를 이용해 그 값을 바꾸게 되는데 실제로
+ append시에는 StringBuilder에 내장된 String.valueof()함수를 통해 들어온 인자를 String값으로 바꿔 StringBuilder에 저장하게 된다.
+ 따라서 Map의 get()함수를 통해 얻은 int값을 String으로 append할 수 있게 만들어 준다.
+ StringBuilder에서 append는 버퍼에 그 값을 저장하는 것으로 메모리 연산이고 StringBuilder를 출력하는 것은 버퍼의 값을 출력하는 것으로 1번만
+ 실행되지만 System.out.print의 경우 for문의 횟수만큼 배열의 값을 출력스트림으로 보내는 작업을 하기때문에 StringBuilder의 값을 출력하는 것
+ 보다 오버헤드가 더 클 수 밖에 없다. 따라서 StringBuilder를 사용하면 출력하는 시간을 줄일 수 있다.
+
+  */
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int[] A = new int[N], B;
+        Map<Integer,Integer> list = new HashMap<>();
+        for(int i = 0; i < N; i++){
+            int num = sc.nextInt();
+            A[i] =  num;
+        }
+
+        /* 첫번째로 사용한 방법 - 시간초과
+            ArrayList의 remove는 해당 인덱스를 삭제하고난 뒤에 그 뒤의 값의 인덱스를 한칸씩 당기는 행동을 함
+            이에 따라 remove가 될 때 마다 시간이 많이 걸릴 수 밖에 없음
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i = 0; i < N ; i++){
+            int num = sc.nextInt();
+            A[i] = num;
+            list.add(num);
+        }
+        Collections.sort(list);
+        i++로 하지않는 이유: remove시 인덱스가 한칸씩 줄기 때문에 처음의 list.size()보다 list의 크기가 줄어들기 때문에
+        OutofBounds Exceoption이 발생할 수 있다.
+        for(int i = list.size() - 1; i > 0; i--){
+            if(list.get(i).equals(list.get(i-1))) list.remove(i);
+        }
+
+        for(int i = 0; i < N; i++){
+            System.out.print(list.indexOf(A[i]) + " ");
+        }*/
+
+        B = A.clone();
+
+        Arrays.sort(B);
+
+        int count = 0;
+
+        for(int i = 0; i < N; i++){
+            if(!list.containsKey(B[i])) list.put(B[i],count++);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < A.length; i++){
+            sb.append(list.get(A[i])).append(' ');
+        }
+
+        System.out.println(sb);
+
+        sc.close();
+
+    }
+}
