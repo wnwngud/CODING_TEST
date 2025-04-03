@@ -1,0 +1,58 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // 테스트 케이스 T개가 주어지고 인덱스를 T크기 만큼 생성
+        int T = scanner.nextInt();
+        int []a =  new int[T];
+        // 인덱스에 숫자 n들을 넣는다
+        for (int i = 0; i < T; i++) {
+            a[i] = scanner.nextInt();
+        }
+        // 이진수 구하기
+        for (int i = 0; i < T; i++) {
+            BinaryNumber(a[i]);
+        }
+    }
+
+    public static void BinaryNumber(int n){
+        int []arry = new int[n];
+        int k = 0;
+
+        // 주어진 숫자 n보다 큰 2^i 구하기
+        // -> 2^i에서 i를 내려가면서 1인가 0인가 판별하기 위해 큰것을 구했다면 중단
+        for(int i=0;i<n;i++){
+            if(n <= (int)Math.pow(2, i)) {
+                k = i;
+                break;
+            }
+        }
+        //System.out.println(k);
+
+        // n에서 2의i승보다 크다면 n에서 2^i만큼 빼고 i번째 인덱스에 1집어 넣기
+        // 만약 아니라면 i번째 인덱스에 0을 집어넣고 다음으로
+        for(int j = k; 0<=j ; j--){
+            if(n >= (int)Math.pow(2, j)) {
+                arry[j] = 1;
+                n -= (int)Math.pow(2, j);
+            }
+            else
+                arry[j] = 0;
+        }
+
+        // 이진수로 잘 변환 됐는지 판단
+//        for(int i =0;i<k;i++)
+//            System.out.print(arry[i]+" ");
+//        System.out.println();
+
+        // 인덱스 안에 1이 있다면 몇번째 인덱스인지 출력하기
+        for(int i =0; i<k+1 ;i++)
+        {
+            if(arry[i] == 1)
+                System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+}
