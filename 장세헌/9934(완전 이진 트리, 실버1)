@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int K = sc.nextInt();
+        int Pow_K = (int)Math.pow(2,K);
+        int[] tree = new int[Pow_K - 1];// 완전이진트리 배열
+        for(int i = 0; i < Pow_K - 1; i++){
+            int element = sc.nextInt();
+            tree[i] = element;
+        }
+        int lo = 0, hi = Pow_K - 1;
+        level_order(tree,lo,hi);
+
+    }
+    public static void level_order(int[] tree, int lo, int hi){
+        int mid = (lo + hi) / 2;
+        for(int i = mid; i <= tree.length; i += hi+1){
+            System.out.print(tree[i] + " ");
+        }
+        System.out.println();
+        if(hi == 1) return;
+        level_order(tree,lo,mid);
+    }
+}
