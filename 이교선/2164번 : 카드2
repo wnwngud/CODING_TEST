@@ -1,0 +1,28 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int N = scanner.nextInt();
+        Queue<Integer> card = new LinkedList<>();
+        for(int i = 1; i <= N; i++){ // 큐에 값 저장
+            card.add(i);
+        }
+        int del = 1; // 1:값 삭제, 0:값 이동
+        while(N>1){
+            if(del == 1){ // del == 1 이면 값 삭제, N--, del = 0 바꾸기
+                card.remove();
+                N--;
+                del = 0;
+            }
+            else if(del == 0){ // del == 0 이면 card의 peek를 다시 추가해준다음 삭제, del = 1로 바꾸기
+                card.add(card.peek());
+                card.remove();
+                del = 1;
+            }
+        }
+        System.out.println(card.poll());
+    }
+}
