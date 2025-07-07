@@ -1,0 +1,45 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int count = 0; // 수열 넘버
+        int number = 1; // 스택에 들어갈 숫자
+
+        Stack<Integer> stack = new Stack<>();
+        int[] sequence = new int[n];
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sequence[i] = scanner.nextInt();
+        }
+
+
+        while (count < n) {
+            if (stack.isEmpty() || stack.peek() < sequence[count]) {
+                stack.push(number++);
+                out.append('+');
+                // 스택이 비어있거나 스택의 가장 위쪽의 숫자가 수열의 숫자보다 작으면 스택에 number 푸쉬 한다음 number++
+                // 그리고 스트링빌더에 '+' 넣기
+            } else if (stack.peek() == sequence[count]) {
+                stack.pop();
+                count++;
+                out.append('-');
+                // 스택의 가장 위쪽의 숫자가 수열의 숫자와 같으면 pop 한뒤 count++,
+                // 그리고 스트링빌더에 '-' 넣기
+            } else {
+                System.out.println("NO");
+                return;
+                // 스택의 가장 위쪽의 숫자가 수열의 숫자보다 작으면 'NO' 출력
+                // 그리고 return 으로 끝내기
+            }
+        }
+
+        for (int i = 0; i < out.length(); i++) {
+            System.out.println(out.charAt(i));
+            // 스트링빌더에 저장된 숫자 출력
+
+        }
+    }
+}
