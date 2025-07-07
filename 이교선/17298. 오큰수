@@ -1,0 +1,42 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        // 버퍼리더와 스트링빌더 선언
+        Stack<Integer> stack = new Stack<>();
+
+        int N = Integer.parseInt(br.readLine()); // 버퍼리더로 값 받음
+        int[] sequence = new int[N]; // 값 입력 배열
+        int[] NGE = new int[N]; // 오큰수 정답 배열
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        // 스트링토크나이저 선언
+        for(int i = 0; i < N; i++){
+            sequence[i] = Integer.parseInt(st.nextToken()); // 트큰으로 한개씩 입력받음
+        }
+
+        for(int i = 0; i < N; i++){
+            while(!stack.isEmpty() && sequence[stack.peek()] < sequence[i]){
+                //스택이 비어있지 않고 스택에 들어있는 인덱스값을 뽑아와서 다음의 값과 비교
+                // 만약 다음의 값이 크다면 그것이 오큰수
+                NGE[stack.pop()] = sequence[i];
+                // 오큰수 정답 배열에 i번째 값을 집어 넣고 스택에서 오큰수를 구한 것은 제거
+            }
+            stack.push(i); // 값 추가
+        }
+        // 스택에 값이 아닌 인덱스 값을 집어 넣음으로써 몇번째 값인지 알 수 있도록함
+
+        while(!stack.isEmpty()){ //for문을 거쳐도 스택에 남아 있는것들(오큰수가 없는 것들)
+            NGE[stack.pop()] = -1; // -1로 채워넣음
+        }
+
+        for(int i = 0; i < N; i++){
+            sb.append(NGE[i]).append(' ');
+        }
+
+        System.out.println(sb);
+    }
+}
