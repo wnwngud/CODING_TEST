@@ -1,0 +1,56 @@
+import java.util.Scanner;
+
+public class Main {
+    public static int partition(int left, int right, int[] seq){
+        int low = left;
+        int high = right+1;
+        int pivot = seq[left];
+
+        do{
+            do{
+                low++;
+            }while(low<=right && seq[low] < pivot);
+
+            do{
+                high--;
+            }while(high>=left && seq[high] > pivot);
+
+            if(low<high){
+                int temp = seq[low];
+                seq[low] = seq[high];
+                seq[high] = temp;
+            }
+        } while(low < high);
+
+        int temp = seq[left];
+        seq[left] = seq[high];
+        seq[high] = temp;
+
+        return high;
+    }
+
+    public static void quick_sort(int[] seq, int left, int right){
+        if(left< right){
+            int pivot_point = partition(left, right, seq);
+
+            quick_sort(seq, left, pivot_point-1);
+            quick_sort(seq, pivot_point+1, right);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int[] seq = new int[N];
+
+        for(int i=0; i<N; i++){
+            seq[i] = sc.nextInt();
+        }
+
+        quick_sort(seq, 0, N-1);
+
+        for(int i=0; i<N; i++){
+            System.out.println(seq[i]);
+        }
+    }
+}
