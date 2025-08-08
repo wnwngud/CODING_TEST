@@ -48,7 +48,6 @@ public class Main {
             Node n = list[x].get(i);
             if(visited[n.e] == false) {
                 dfs(n.e, n.cost + len);
-                visited[n.e] = true;
             }
         }
         
